@@ -2,10 +2,8 @@ using UnityEngine;
 
 public class PinScript : MonoBehaviour
 {
-	[SerializeField]
-	private SpringPositionScript springPositionScript;
+	public SpringPositionScript springPositionScript;
 
-	[SerializeField]
 	private PuzzleScript puzzleScript;
 
 	[SerializeField]
@@ -25,6 +23,7 @@ public class PinScript : MonoBehaviour
 		activePin = false;
 		pinLocked = false;
 		colliderActive = true;
+		puzzleScript = GetComponentInParent<PuzzleScript>();
 	}
 
 	private void Update()

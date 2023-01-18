@@ -6,8 +6,8 @@ public class SpringPositionScript : MonoBehaviour
 	[SerializeField]
 	private List<GameObject> Springs;
 
-	[SerializeField]
-	private GameObject pinObj;
+    [SerializeField]
+	private PinScript pinScript;
 
 	[SerializeField]
 	public float pinSize;
@@ -17,6 +17,12 @@ public class SpringPositionScript : MonoBehaviour
 
 	[SerializeField]
 	private Material greenM;
+
+    private void Awake()
+    {
+        pinScript = transform.Find("Pin").GetComponent<PinScript>();
+        pinScript.springPositionScript = this;
+    }
 
     /* Skill  min max
        0-20    2   3
@@ -28,7 +34,7 @@ public class SpringPositionScript : MonoBehaviour
     */
     public void SetSprings(int playerSkill)
     {
-        pinObj.transform.localScale = new Vector3(1.05f, 1.05f, pinSize);
+        pinScript.transform.localScale = new Vector3(1.05f, 1.05f, pinSize);
 
         int greenSizeMinimum = GetGreenSizeMin(playerSkill);
         int greenSizeMaximum = GetGreenSizeMax(playerSkill);
@@ -79,6 +85,6 @@ public class SpringPositionScript : MonoBehaviour
 
     public void ResetSprings()
     {
-        pinObj.GetComponent<PinScript>().ResetPin();
+        pinScript.ResetPin();
     }
 }

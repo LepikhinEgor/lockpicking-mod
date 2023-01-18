@@ -37,6 +37,10 @@ public class PuzzleScript : MonoBehaviour
 	[SerializeField]
 	private LockLevel lockLevel;
 
+	[SerializeField]
+	[Range(0, 100)]
+	private int playerSkill;
+
 	public PuzzleDoorScript pds;
 
 	public SpringPositionScript activeSpring;
@@ -64,7 +68,7 @@ public class PuzzleScript : MonoBehaviour
 
 	private void Start()
 	{
-		initialAxisPosition = new Vector3(0.029f, pickAxis.localPosition.y, pickAxis.localPosition.z);
+		initialAxisPosition = new Vector3(0.036F, pickAxis.localPosition.y, pickAxis.localPosition.z);
 		puzzleActive = false;
 		hitting = false;
 		animating = false;
@@ -194,7 +198,7 @@ public class PuzzleScript : MonoBehaviour
 
 		foreach (SpringPositionScript springPosition in springPositions)
 		{
-			springPosition.SetSprings(50);
+			springPosition.SetSprings(playerSkill);
 		}
 
 		switch (lockLevel)
@@ -279,7 +283,7 @@ public class PuzzleScript : MonoBehaviour
 		progress = 0;
 		if (_resetPick)
 		{
-			pickAxis.localPosition = new Vector3(0.029f, pickAxis.localPosition.y, pickAxis.localPosition.z);
+			pickAxis.localPosition = new Vector3(0.036f, pickAxis.localPosition.y, pickAxis.localPosition.z);
 		}
 		foreach (SpringPositionScript springPosition in springPositions)
 		{
