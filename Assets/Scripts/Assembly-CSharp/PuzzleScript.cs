@@ -1,5 +1,3 @@
-// Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-// PuzzleScript
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -59,6 +57,8 @@ public class PuzzleScript : MonoBehaviour
 
 	private bool animating;
 
+	private bool moveRight;
+	private bool moveLeft;
 
 	private int picksCount = 5;
 
@@ -87,56 +87,85 @@ public class PuzzleScript : MonoBehaviour
 			hasKit = picksCount > 0;
 			Toggle();
 		}
-		if (hasKit)
+
+		if (InputHitPin() && !hitting)
+        {
+			hitting = true;
+			pickAnim.SetTrigger("Hit");
+		}
+
+		if (InputMoveRightStart())
 		{
-			if (puzzleActive)
-			{
-				if (InputHitPin() && !hitting)
-				{
-					hitting = true;
-					pickAnim.SetTrigger("Hit");
-				}
-				if (InputMoveRight() && !hitting)
-				{
-					if (pickAxis.transform.localPosition.x > initialAxisPosition.x - 0.016f)
-					{
-						pickAxis.transform.localPosition = pickAxis.transform.localPosition + Vector3.right * (0f - speed) * Time.deltaTime;
-					}
-				}
-				else if ((InputMoveLeft() & !hitting) && pickAxis.transform.localPosition.x < initialAxisPosition.x)
-				{
-					pickAxis.transform.localPosition = pickAxis.transform.localPosition + Vector3.right * speed * Time.deltaTime;
-				}
-				if (!completed && progress == goal)
-				{
-					completed = true;
-					tumblerMesh.enabled = true;
-					puzzleActive = false;
-					puzzleAnim.SetTrigger("Complete");
-					if (pds != null)
-					{
-						pds.UnlockDoor();
-					}
-				}
-			}
+			moveRight = true;
+		}
+
+		if (InputMoveRightEnd())
+		{
+			moveRight = false;
+		}
+
+		if (InputMoveLeftStart())
+		{
+			moveLeft = true;
+		}
+
+		if (InputMoveLeftEnd())
+		{
+			moveLeft = false;
 		}
 	}
 
-	private bool InputHitPin()
+    private void FixedUpdate()
+    {
+        if (!hasKit || !puzzleActive)
+            return;
+
+        if (moveRight && pickAxis.transform.localPosition.x > initialAxisPosition.x - 0.016f)
+        {
+            pickAxis.transform.localPosition = pickAxis.transform.localPosition + Vector3.right * (0f - speed) * Time.deltaTime;
+        }
+
+        if (moveLeft && pickAxis.transform.localPosition.x < initialAxisPosition.x)
+        {
+            pickAxis.transform.localPosition = pickAxis.transform.localPosition + Vector3.right * speed * Time.deltaTime;
+        }
+
+        if (!completed && progress == goal)
+        {
+            completed = true;
+            tumblerMesh.enabled = true;
+            puzzleActive = false;
+            puzzleAnim.SetTrigger("Complete");
+            if (pds != null)
+            {
+                pds.UnlockDoor();
+            }
+        }
+
+    }
+
+    private bool InputHitPin()
     {
 		return Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0);
 	}
 
-	private bool InputMoveRight()
+	private bool InputMoveRightStart()
     {
-		return Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
+		return Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow);
 	}
 
-	private bool InputMoveLeft()
-    {
-		return Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
+	private bool InputMoveRightEnd()
+	{
+		return Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.RightArrow);
 	}
-
+	private bool InputMoveLeftStart()
+    {
+		return Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow);
+	}
+	private bool InputMoveLeftEnd()
+	{
+		return Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftArrow);
+	}
 	private void ProcessDebugControls()
     {
 		if (Input.GetKeyDown(KeyCode.R))
@@ -155,42 +184,6 @@ public class PuzzleScript : MonoBehaviour
 		{
 			Application.Quit();
 		}
-	}
-
-	public void Toggle()
-	{
-		animating = true;
-		if (puzzleActive)
-		{
-			Hide();
-		}
-		else
-		{
-			Show();
-		}
-	}
-
-	public void Show()
-	{
-		CreatePuzzle();
-		puzzleAnim.SetTrigger("Show");
-	}
-
-	public void Hide()
-	{
-		puzzleActive = false;
-		puzzleAnim.SetTrigger("Hide");
-	}
-
-	public void ClearAnimation()
-	{
-		puzzleActive = true;
-		animating = false;
-	}
-
-	public void ClearAnimationCanMove()
-	{
-		animating = false;
 	}
 
 	public void CreatePuzzle()
@@ -237,6 +230,42 @@ public class PuzzleScript : MonoBehaviour
 				goal = 5;
 				break;
 		}
+	}
+
+	public void Toggle()
+	{
+		animating = true;
+		if (puzzleActive)
+		{
+			Hide();
+		}
+		else
+		{
+			Show();
+		}
+	}
+
+	public void Show()
+	{
+		CreatePuzzle();
+		puzzleAnim.SetTrigger("Show");
+	}
+
+	public void Hide()
+	{
+		puzzleActive = false;
+		puzzleAnim.SetTrigger("Hide");
+	}
+
+	public void ClearAnimation()
+	{
+		puzzleActive = true;
+		animating = false;
+	}
+
+	public void ClearAnimationCanMove()
+	{
+		animating = false;
 	}
 
 	public void StopHit()
