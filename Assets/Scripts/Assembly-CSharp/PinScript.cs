@@ -33,7 +33,7 @@ public class PinScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (activePin && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.S)) && !pinLocked)
+		if (activePin && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) && !pinLocked)
 		{
 			StopPin();
 		}

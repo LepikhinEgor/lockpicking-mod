@@ -33,6 +33,12 @@ public class PuzzleScript : MonoBehaviour
 	[SerializeField]
 	private Text timeText;
 
+	[SerializeField]
+	private bool isDebug;
+
+	[SerializeField]
+	private LockLevel lockLevel;
+
 	public PuzzleDoorScript pds;
 
 	public SpringPositionScript activeSpring;
@@ -53,7 +59,8 @@ public class PuzzleScript : MonoBehaviour
 
 	private bool animating;
 
-	private float timeLeft;
+
+	private int picksCount = 5;
 
 	private void Start()
 	{
@@ -65,16 +72,26 @@ public class PuzzleScript : MonoBehaviour
 
 	private void Update()
 	{
+		/*if (!hasKit)
+        {
+			pickAxis.gameObject.SetActive(false);
+			return;
+        }*/
+		if (isDebug)
+        {
+			ProcessDebugControls();
+		}
+
 		if (Input.GetKeyDown(KeyCode.F2))  
 		{
-			hasKit = true;
+			hasKit = picksCount > 0;
 			Toggle();
 		}
 		if (hasKit)
 		{
 			if (puzzleActive)
 			{
-				if ((Input.GetKeyDown(KeyCode.W) || Input.GetMouseButtonDown(1)) && !hitting)
+				if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && !hitting)
 				{
 					hitting = true;
 					pickAnim.SetTrigger("Hit");
@@ -90,14 +107,6 @@ public class PuzzleScript : MonoBehaviour
 				{
 					pickAxis.transform.localPosition = pickAxis.transform.localPosition + Vector3.right * speed * Time.deltaTime;
 				}
-				if (Input.GetKeyDown(KeyCode.R))
-				{
-					ResetPuzzle(_resetPick: true);
-				}
-				if (Input.GetKeyDown(KeyCode.N))
-				{
-					CreatePuzzle();
-				}
 				if (!completed && progress == goal)
 				{
 					completed = true;
@@ -109,20 +118,23 @@ public class PuzzleScript : MonoBehaviour
 						pds.UnlockDoor();
 					}
 				}
-				if (timeLeft > 0f)
-				{
-					timeLeft -= Time.deltaTime;
-					timeText.text = Mathf.Round(timeLeft).ToString();
-				}
-				else
-				{
-					CreatePuzzle();
-				}
 			}
-			if (Input.GetKeyDown(KeyCode.L) && !animating)
-			{
-				Toggle();
-			}
+		}
+	}
+
+	private void ProcessDebugControls()
+    {
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			ResetPuzzle(_resetPick: true);
+		}
+		if (Input.GetKeyDown(KeyCode.N))
+		{
+			CreatePuzzle();
+		}
+		if (Input.GetKeyDown(KeyCode.L) && !animating)
+		{
+			Toggle();
 		}
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
@@ -169,46 +181,46 @@ public class PuzzleScript : MonoBehaviour
 	public void CreatePuzzle()
 	{
 		ResetPuzzle(_resetPick: true);
-		int num = Random.Range(0, 3);
-		switch (num)
-		{
-			case 0:
-				diffText.text = "Easy";
-				tumblerMesh.enabled = false;
-				timeLeft = 60f;
-				goal = 3;
-				break;
-			case 1:
-				diffText.text = "Medium";
-				tumblerMesh.enabled = false;
-				timeLeft = 50f;
-				goal = 4;
-				break;
-			default:
-				diffText.text = "Hard";
-				tumblerMesh.enabled = false;
-				timeLeft = 40f;
-				goal = 5;
-				break;
-		}
-		springPositions[3].gameObject.SetActive(value: true);
-		springPositions[4].gameObject.SetActive(value: true);
-		int num2 = 0;
+
+		tumblerMesh.enabled = false;
+
 		foreach (SpringPositionScript springPosition in springPositions)
 		{
-			num2++;
-			springPosition.SetSprings();
-			if (num == 0 && num2 > 2)
-			{
-				springPositions[3].gameObject.SetActive(value: false);
-				springPositions[4].gameObject.SetActive(value: false);
+			springPosition.SetSprings(50);
+		}
+
+		switch (lockLevel)
+		{
+			case LockLevel.Easy:
+				diffText.text = "Easy";
+				goal = 1;
+				springPositions[1].gameObject.SetActive(false);
+				springPositions[2].gameObject.SetActive(false);
+				springPositions[3].gameObject.SetActive(false);
+				springPositions[4].gameObject.SetActive(false);
 				break;
-			}
-			if (num == 1 && num2 > 3)
-			{
-				springPositions[4].gameObject.SetActive(value: false);
+			case LockLevel.Medium:
+				diffText.text = "Medium";
+				goal = 2;
+				springPositions[2].gameObject.SetActive(false);
+				springPositions[3].gameObject.SetActive(false);
+				springPositions[4].gameObject.SetActive(false);
 				break;
-			}
+			case LockLevel.Hard:
+				diffText.text = "Hard";
+				goal = 3;
+				springPositions[3].gameObject.SetActive(false);
+				springPositions[4].gameObject.SetActive(false);
+				break;
+			case LockLevel.Expert:
+				diffText.text = "Expert";
+				springPositions[4].gameObject.SetActive(false);
+				goal = 4;
+				break;
+			case LockLevel.Master:
+				diffText.text = "Master";
+				goal = 5;
+				break;
 		}
 	}
 
