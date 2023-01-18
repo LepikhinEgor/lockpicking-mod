@@ -91,19 +91,19 @@ public class PuzzleScript : MonoBehaviour
 		{
 			if (puzzleActive)
 			{
-				if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && !hitting)
+				if (InputHitPin() && !hitting)
 				{
 					hitting = true;
 					pickAnim.SetTrigger("Hit");
 				}
-				if (Input.GetKey(KeyCode.D) && !hitting)
+				if (InputMoveRight() && !hitting)
 				{
 					if (pickAxis.transform.localPosition.x > initialAxisPosition.x - 0.016f)
 					{
 						pickAxis.transform.localPosition = pickAxis.transform.localPosition + Vector3.right * (0f - speed) * Time.deltaTime;
 					}
 				}
-				else if ((Input.GetKey(KeyCode.A) & !hitting) && pickAxis.transform.localPosition.x < initialAxisPosition.x)
+				else if ((InputMoveLeft() & !hitting) && pickAxis.transform.localPosition.x < initialAxisPosition.x)
 				{
 					pickAxis.transform.localPosition = pickAxis.transform.localPosition + Vector3.right * speed * Time.deltaTime;
 				}
@@ -120,6 +120,21 @@ public class PuzzleScript : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	private bool InputHitPin()
+    {
+		return Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0);
+	}
+
+	private bool InputMoveRight()
+    {
+		return Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
+	}
+
+	private bool InputMoveLeft()
+    {
+		return Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
 	}
 
 	private void ProcessDebugControls()

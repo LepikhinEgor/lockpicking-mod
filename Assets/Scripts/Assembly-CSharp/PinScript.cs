@@ -1,14 +1,12 @@
-// Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-// PinScript
 using UnityEngine;
 
 public class PinScript : MonoBehaviour
 {
 	[SerializeField]
-	private SpringPositionScript sps;
+	private SpringPositionScript springPositionScript;
 
 	[SerializeField]
-	private PuzzleScript ps;
+	private PuzzleScript puzzleScript;
 
 	[SerializeField]
 	private Animator pinAnim;
@@ -22,8 +20,6 @@ public class PinScript : MonoBehaviour
 
 	public bool colliderActive = true;
 
-	public bool resetPick;
-
 	private void Start()
 	{
 		activePin = false;
@@ -33,7 +29,7 @@ public class PinScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (activePin && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) && !pinLocked)
+		if (activePin && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) && !pinLocked))
 		{
 			StopPin();
 		}
@@ -62,13 +58,14 @@ public class PinScript : MonoBehaviour
 		}
 	}
 
+	//Ударили по пину отмычкой
 	public void HitPin()
 	{
-		sps.enabled = true;
+		springPositionScript.enabled = true;
 		activePin = true;
 		colliderActive = false;
 		pinAnim.SetTrigger("Hit");
-		ps.activeSpring = sps;
+		puzzleScript.activeSpring = springPositionScript;
 	}
 
 	public void StopPin()
@@ -82,7 +79,7 @@ public class PinScript : MonoBehaviour
 	public void DeactivatePin()
 	{
 		activePin = false;
-		sps.enabled = false;
+		springPositionScript.enabled = false;
 		colliderActive = true;
 	}
 
@@ -91,24 +88,24 @@ public class PinScript : MonoBehaviour
 		if (pinLocked)
 		{
 			activePin = false;
-			ps.progress++;
+			puzzleScript.progress++;
 		}
 		else
 		{
-			ResetPuzzle(resetPick);
+			ResetPuzzle(false);
 		}
 	}
 
 	public void ResetPuzzle(bool _resetPick)
 	{
-		ps.ResetPuzzle(_resetPick);
+		puzzleScript.ResetPuzzle(_resetPick);
 	}
 
 	public void ResetPin()
 	{
 		pinLocked = false;
 		activePin = false;
-		sps.enabled = false;
+		springPositionScript.enabled = false;
 		colliderActive = true;
 		pinAnim.SetTrigger("Reset");
 		pinAnim.speed = 1f;
