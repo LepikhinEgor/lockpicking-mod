@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 2367665710
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: lockpicking
+      Dependencies: {}
