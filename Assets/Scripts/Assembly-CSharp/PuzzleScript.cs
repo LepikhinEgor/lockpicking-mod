@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -36,6 +37,9 @@ public class PuzzleScript : MonoBehaviour
 
 	[SerializeField]
 	private LockLevel lockLevel;
+
+	[SerializeField]
+	private TextMeshPro picksCountText;
 
 	[SerializeField]
 	[Range(0, 100)]
@@ -295,6 +299,8 @@ public class PuzzleScript : MonoBehaviour
 		{
 			springPosition.ResetSprings();
 		}
+
+		picksCountText.text = "Picks: " + picksCount;
 	}
 
 	public void DecreasePicksCount()

@@ -56,6 +56,13 @@ public class SpringPositionScript : MonoBehaviour
             Springs[i].tag = "GreenSpring";
             Springs[i].GetComponent<MeshRenderer>().material = greenM;
         }
+
+        for (int i = 0; i < Springs.Count; i++)
+        {
+            if (Springs[i].tag == "RedSpring")
+                Springs[i].GetComponent<MeshRenderer>().enabled = false;
+        }
+
     }
 
     private int GetGreenSizeMin(int playerSkill)
