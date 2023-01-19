@@ -68,7 +68,7 @@ public class PuzzleScript : MonoBehaviour
 
 	private void Start()
 	{
-		initialAxisPosition = new Vector3(0.036F, pickAxis.localPosition.y, pickAxis.localPosition.z);
+		initialAxisPosition = new Vector3(0.031F, pickAxis.localPosition.y, pickAxis.localPosition.z);
 		puzzleActive = false;
 		hitting = false;
 		animating = false;
@@ -283,7 +283,7 @@ public class PuzzleScript : MonoBehaviour
 		progress = 0;
 		if (_resetPick)
 		{
-			pickAxis.localPosition = new Vector3(0.036f, pickAxis.localPosition.y, pickAxis.localPosition.z);
+			pickAxis.localPosition = initialAxisPosition;
 		}
 		foreach (SpringPositionScript springPosition in springPositions)
 		{
