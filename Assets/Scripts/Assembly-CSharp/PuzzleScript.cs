@@ -22,8 +22,8 @@ public class PuzzleScript : MonoBehaviour
 	[SerializeField]
 	private float speed;
 
-	[SerializeField]
-	private Text diffText;
+	//[SerializeField]
+	//private Text diffText;
 
 	[SerializeField]
 	private MeshRenderer tumblerMesh;
@@ -204,7 +204,7 @@ public class PuzzleScript : MonoBehaviour
 		switch (lockLevel)
 		{
 			case LockLevel.Easy:
-				diffText.text = "Easy";
+				//diffText.text = "Easy";
 				goal = 1;
 				springPositions[1].gameObject.SetActive(false);
 				springPositions[2].gameObject.SetActive(false);
@@ -212,25 +212,25 @@ public class PuzzleScript : MonoBehaviour
 				springPositions[4].gameObject.SetActive(false);
 				break;
 			case LockLevel.Medium:
-				diffText.text = "Medium";
+				//diffText.text = "Medium";
 				goal = 2;
 				springPositions[2].gameObject.SetActive(false);
 				springPositions[3].gameObject.SetActive(false);
 				springPositions[4].gameObject.SetActive(false);
 				break;
 			case LockLevel.Hard:
-				diffText.text = "Hard";
+				//diffText.text = "Hard";
 				goal = 3;
 				springPositions[3].gameObject.SetActive(false);
 				springPositions[4].gameObject.SetActive(false);
 				break;
 			case LockLevel.Expert:
-				diffText.text = "Expert";
+				//diffText.text = "Expert";
 				springPositions[4].gameObject.SetActive(false);
 				goal = 4;
 				break;
 			case LockLevel.Master:
-				diffText.text = "Master";
+				//diffText.text = "Master";
 				goal = 5;
 				break;
 		}
