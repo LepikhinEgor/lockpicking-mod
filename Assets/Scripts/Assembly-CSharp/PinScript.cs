@@ -97,6 +97,7 @@ public class PinScript : MonoBehaviour
 
 	public void ResetPuzzle(bool _resetPick)
 	{
+		puzzleScript.DecreasePicksCount();
 		puzzleScript.ResetPuzzle(_resetPick);
 	}
 

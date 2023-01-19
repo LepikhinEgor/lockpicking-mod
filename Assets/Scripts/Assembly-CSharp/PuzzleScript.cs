@@ -285,9 +285,20 @@ public class PuzzleScript : MonoBehaviour
 		{
 			pickAxis.localPosition = initialAxisPosition;
 		}
+
+		if (picksCount <= 0)
+        {
+			pickAxis.gameObject.SetActive(false);
+
+		}
 		foreach (SpringPositionScript springPosition in springPositions)
 		{
 			springPosition.ResetSprings();
 		}
 	}
+
+	public void DecreasePicksCount()
+    {
+		picksCount--;
+    }
 }
