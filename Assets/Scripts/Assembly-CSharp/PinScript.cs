@@ -80,6 +80,7 @@ public class PinScript : MonoBehaviour
 		activePin = false;
 		springPositionScript.enabled = false;
 		colliderActive = true;
+		puzzleScript.StopHit();
 	}
 
 	public void CheckPin()
@@ -88,6 +89,7 @@ public class PinScript : MonoBehaviour
 		{
 			activePin = false;
 			puzzleScript.progress++;
+			puzzleScript.StopHit();
 		}
 		else
 		{

@@ -1,13 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class PuzzleScript : MonoBehaviour
 {
+	private const float LOCK_WIDTH = 0.016f;
+
 	[SerializeField]
 	private List<SpringPositionScript> springPositions;
 
@@ -22,9 +21,6 @@ public class PuzzleScript : MonoBehaviour
 
 	[SerializeField]
 	private float speed;
-
-	//[SerializeField]
-	//private Text diffText;
 
 	[SerializeField]
 	private MeshRenderer tumblerMesh;
@@ -45,7 +41,10 @@ public class PuzzleScript : MonoBehaviour
 	[Range(0, 100)]
 	private int playerSkill;
 
-	public PuzzleDoorScript pds;
+	[SerializeField]
+	private int picksCount = 5;
+
+	public PuzzleDoorScript doorScript;
 
 	public SpringPositionScript activeSpring;
 
@@ -66,9 +65,8 @@ public class PuzzleScript : MonoBehaviour
 	private bool animating;
 
 	private bool moveRight;
-	private bool moveLeft;
 
-	private int picksCount = 5;
+	private bool moveLeft;
 
 	private void Start()
 	{
@@ -80,11 +78,6 @@ public class PuzzleScript : MonoBehaviour
 
 	private void Update()
 	{
-		/*if (!hasKit)
-        {
-			pickAxis.gameObject.SetActive(false);
-			return;
-        }*/
 		if (isDebug)
         {
 			ProcessDebugControls();
@@ -96,14 +89,14 @@ public class PuzzleScript : MonoBehaviour
 			Toggle();
 		}
 
-		if (InputHitPin() && !hitting)
+		if (InputHitPin() && !hitting && !(activeSpring?.pinScript?.activePin ?? false))
         {
 			hitting = true;
 			pickAnim.SetTrigger("Hit");
 		}
 
-		if (InputMoveRightStart())
-		{
+		if (InputMoveRightStart()) 
+		{ 
 			moveRight = true;
 		}
 
@@ -128,7 +121,7 @@ public class PuzzleScript : MonoBehaviour
         if (!hasKit || !puzzleActive)
             return;
 
-        if (moveRight && pickAxis.transform.localPosition.x > initialAxisPosition.x - 0.016f)
+        if (moveRight && pickAxis.transform.localPosition.x > initialAxisPosition.x - LOCK_WIDTH)
         {
             pickAxis.transform.localPosition = pickAxis.transform.localPosition + Vector3.right * (0f - speed) * Time.deltaTime;
         }
@@ -144,9 +137,10 @@ public class PuzzleScript : MonoBehaviour
             tumblerMesh.enabled = true;
             puzzleActive = false;
             puzzleAnim.SetTrigger("Complete");
-            if (pds != null)
+
+            if (doorScript != null)
             {
-                pds.UnlockDoor();
+				doorScript.UnlockDoor();
             }
         }
 
@@ -208,7 +202,6 @@ public class PuzzleScript : MonoBehaviour
 		switch (lockLevel)
 		{
 			case LockLevel.Easy:
-				//diffText.text = "Easy";
 				goal = 1;
 				springPositions[1].gameObject.SetActive(false);
 				springPositions[2].gameObject.SetActive(false);
@@ -216,25 +209,21 @@ public class PuzzleScript : MonoBehaviour
 				springPositions[4].gameObject.SetActive(false);
 				break;
 			case LockLevel.Medium:
-				//diffText.text = "Medium";
 				goal = 2;
 				springPositions[2].gameObject.SetActive(false);
 				springPositions[3].gameObject.SetActive(false);
 				springPositions[4].gameObject.SetActive(false);
 				break;
 			case LockLevel.Hard:
-				//diffText.text = "Hard";
 				goal = 3;
 				springPositions[3].gameObject.SetActive(false);
 				springPositions[4].gameObject.SetActive(false);
 				break;
 			case LockLevel.Expert:
-				//diffText.text = "Expert";
 				springPositions[4].gameObject.SetActive(false);
 				goal = 4;
 				break;
 			case LockLevel.Master:
-				//diffText.text = "Master";
 				goal = 5;
 				break;
 		}

@@ -7,7 +7,7 @@ public class SpringPositionScript : MonoBehaviour
 	private List<GameObject> Springs;
 
     [SerializeField]
-	private PinScript pinScript;
+	public PinScript pinScript;
 
 	[SerializeField]
 	public float pinSize;
@@ -48,6 +48,7 @@ public class SpringPositionScript : MonoBehaviour
         {
             Springs[i].tag = "RedSpring";
             Springs[i].GetComponent<MeshRenderer>().material = redM;
+            Springs[i].GetComponent<MeshRenderer>().enabled = false;
         }
 
         //Поверх красных позиций переписываем зеленые позиции
@@ -55,14 +56,8 @@ public class SpringPositionScript : MonoBehaviour
         {
             Springs[i].tag = "GreenSpring";
             Springs[i].GetComponent<MeshRenderer>().material = greenM;
+            Springs[i].GetComponent<MeshRenderer>().enabled = true;
         }
-
-        for (int i = 0; i < Springs.Count; i++)
-        {
-            if (Springs[i].tag == "RedSpring")
-                Springs[i].GetComponent<MeshRenderer>().enabled = false;
-        }
-
     }
 
     private int GetGreenSizeMin(int playerSkill)

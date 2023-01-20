@@ -1,14 +1,11 @@
-// Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-// PuzzleDoorScript
 using UnityEngine;
 
 public class PuzzleDoorScript : MonoBehaviour
 {
-	[SerializeField]
-	private Rigidbody rb;
+	private bool locked;
 
 	public void UnlockDoor()
 	{
-		rb.constraints = RigidbodyConstraints.None;
+		locked = false;
 	}
 }
