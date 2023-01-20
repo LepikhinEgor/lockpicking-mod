@@ -172,10 +172,12 @@ public class PuzzleScript : MonoBehaviour
     {
 		if (Input.GetKeyDown(KeyCode.R))
 		{
+			picksCount = 5;
 			ResetPuzzle(_resetPick: true);
 		}
 		if (Input.GetKeyDown(KeyCode.N))
 		{
+			picksCount = 5;
 			CreatePuzzle();
 		}
 		if (Input.GetKeyDown(KeyCode.L) && !animating)

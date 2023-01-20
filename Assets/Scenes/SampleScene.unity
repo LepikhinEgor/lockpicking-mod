@@ -322,6 +322,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: LockpickPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 6873492291780523381, guid: dc064432082845a45829e5fa22d63e7e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6873492291780523381, guid: dc064432082845a45829e5fa22d63e7e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8306217260043312181, guid: dc064432082845a45829e5fa22d63e7e, type: 3}
       propertyPath: m_RootOrder
       value: 0

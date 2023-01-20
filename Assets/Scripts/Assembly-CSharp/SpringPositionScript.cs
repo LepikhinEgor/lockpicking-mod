@@ -34,7 +34,7 @@ public class SpringPositionScript : MonoBehaviour
     */
     public void SetSprings(int playerSkill)
     {
-        pinScript.transform.localScale = new Vector3(1.05f, 1.05f, pinSize);
+        //pinScript.transform.localScale = new Vector3(1.05f, 1.05f, pinSize);
 
         int greenSizeMinimum = GetGreenSizeMin(playerSkill);
         int greenSizeMaximum = GetGreenSizeMax(playerSkill);
