@@ -70,6 +70,9 @@ MonoBehaviour:
   pinSize: 0.55
   redM: {fileID: 2100000, guid: cedbe603ef1e70b409eba9f34ce6c2c4, type: 2}
   greenM: {fileID: 2100000, guid: ac8ce121f0588894f86d46e8a294222a, type: 2}
+  springItemSize: 0
+  lockTargetMinY: 0
+  lockTargetMaxY: 0
 --- !u!1 &7063854441783284238
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,8 +705,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.001600001, y: 0.0016, z: 0.0019}
-  m_Center: {x: -3.033659e-18, y: 0, z: -0.0004269496}
+  m_Size: {x: 0.001600001, y: 0.0016, z: 0.0018}
+  m_Center: {x: -3.033659e-18, y: 0, z: -0.0005269496}
 --- !u!95 &7063854441783284615
 Animator:
   serializedVersion: 5

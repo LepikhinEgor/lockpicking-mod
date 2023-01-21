@@ -18,10 +18,19 @@ public class SpringPositionScript : MonoBehaviour
 	[SerializeField]
 	private Material greenM;
 
+    [SerializeField]
+    private float springItemSize;
+
+    [SerializeField]
+    private float lockTargetMinY;
+    [SerializeField]
+    private float lockTargetMaxY;
+
     private void Awake()
     {
         pinScript = transform.Find("Pin").GetComponent<PinScript>();
         pinScript.springPositionScript = this;
+        springItemSize = Springs[0].GetComponent<BoxCollider>().size.y;
     }
 
     /* Skill  min max
@@ -34,8 +43,6 @@ public class SpringPositionScript : MonoBehaviour
     */
     public void SetSprings(int playerSkill)
     {
-        //pinScript.transform.localScale = new Vector3(1.05f, 1.05f, pinSize);
-
         int greenSizeMinimum = GetGreenSizeMin(playerSkill);
         int greenSizeMaximum = GetGreenSizeMax(playerSkill);
 
@@ -58,6 +65,22 @@ public class SpringPositionScript : MonoBehaviour
             Springs[i].GetComponent<MeshRenderer>().material = greenM;
             Springs[i].GetComponent<MeshRenderer>().enabled = true;
         }
+
+        Debug.Log("start = " + greenPositionStart + " end " + greenPositionEnd);
+        lockTargetMaxY = Springs[greenPositionStart].transform.position.y + springItemSize / 2 - 0.01377f;
+        lockTargetMinY = Springs[greenPositionEnd].transform.position.y - springItemSize / 2 - 0.01377f;
+    }
+
+    public bool CheckPinLocked(PinScript pin)
+    {
+        float pinSizeY = pin.GetComponent<BoxCollider>().size.y;
+
+        float pinYMin = pin.transform.position.y - pinSizeY / 2;
+        float pinYMax = pin.transform.position.y + pinSizeY / 2;
+
+        Debug.Log(pinYMin + " " + lockTargetMinY + " " + pinYMax + " " + lockTargetMaxY );
+
+        return pinYMin > lockTargetMinY && pinYMax < lockTargetMaxY;
     }
 
     private int GetGreenSizeMin(int playerSkill)

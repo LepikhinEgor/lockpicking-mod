@@ -26,9 +26,6 @@ public class PuzzleScript : MonoBehaviour
 	private MeshRenderer tumblerMesh;
 
 	[SerializeField]
-	private Text timeText;
-
-	[SerializeField]
 	private bool isDebug;
 
 	[SerializeField]
@@ -47,6 +44,8 @@ public class PuzzleScript : MonoBehaviour
 	public PuzzleDoorScript doorScript;
 
 	public SpringPositionScript activeSpring;
+
+	private SoundController soundController;
 
 	public int progress;
 
@@ -74,6 +73,8 @@ public class PuzzleScript : MonoBehaviour
 		puzzleActive = false;
 		hitting = false;
 		animating = false;
+
+		soundController = GameObject.FindObjectOfType<SoundController>();
 	}
 
 	private void Update()
@@ -136,7 +137,7 @@ public class PuzzleScript : MonoBehaviour
             completed = true;
             tumblerMesh.enabled = true;
             puzzleActive = false;
-            puzzleAnim.SetTrigger("Complete");
+			Invoke("CompleteUnlock", 0.25f);
 
             if (doorScript != null)
             {
@@ -145,6 +146,12 @@ public class PuzzleScript : MonoBehaviour
         }
 
     }
+
+	private void CompleteUnlock()
+    {
+		puzzleAnim.SetTrigger("Complete");
+		soundController.PlayOpenSound();
+	}
 
     private bool InputHitPin()
     {

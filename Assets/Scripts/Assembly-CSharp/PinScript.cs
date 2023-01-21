@@ -12,6 +12,8 @@ public class PinScript : MonoBehaviour
 	[SerializeField]
 	private BoxCollider pinCollider;
 
+	SoundController soundController;
+
 	public bool activePin;
 
 	public bool pinLocked;
@@ -24,6 +26,7 @@ public class PinScript : MonoBehaviour
 		pinLocked = false;
 		colliderActive = true;
 		puzzleScript = GetComponentInParent<PuzzleScript>();
+		soundController = GameObject.FindObjectOfType<SoundController>();
 	}
 
 	private void Update()
@@ -72,7 +75,19 @@ public class PinScript : MonoBehaviour
 		pinAnim.speed = 0f;
 		colliderActive = true;
 		pinLocked = true;
-		Invoke("CheckPin", 0.25f);
+		//CheckPin();
+		Debug.Log(springPositionScript.CheckPinLocked(this));
+		if (springPositionScript.CheckPinLocked(this))
+		{
+			activePin = false;
+			puzzleScript.progress++;
+			puzzleScript.StopHit();
+			soundController.PlayFixSound();
+		}
+		else
+		{
+			Invoke("ResetPuzzle", 0.25f);
+		}
 	}
 
 	public void DeactivatePin()
@@ -90,17 +105,18 @@ public class PinScript : MonoBehaviour
 			activePin = false;
 			puzzleScript.progress++;
 			puzzleScript.StopHit();
+			soundController.PlayFixSound();
 		}
 		else
 		{
-			ResetPuzzle(false);
+			ResetPuzzle();
 		}
 	}
 
-	public void ResetPuzzle(bool _resetPick)
+	public void ResetPuzzle()
 	{
 		puzzleScript.DecreasePicksCount();
-		puzzleScript.ResetPuzzle(_resetPick);
+		puzzleScript.ResetPuzzle(false);
 	}
 
 	public void ResetPin()
