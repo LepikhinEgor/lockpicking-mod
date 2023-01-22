@@ -35,6 +35,9 @@ public class PuzzleScript : MonoBehaviour
 	private TextMeshPro picksCountText;
 
 	[SerializeField]
+	private GameObject tumbler;
+
+	[SerializeField]
 	[Range(0, 100)]
 	private int playerSkill;
 
@@ -149,6 +152,8 @@ public class PuzzleScript : MonoBehaviour
 
 	private void CompleteUnlock()
     {
+		tumbler.transform.Find("pins").gameObject.SetActive(true);
+		springPositions.ForEach((springPosition) => springPosition.gameObject.SetActive(false));
 		puzzleAnim.SetTrigger("Complete");
 		soundController.PlayOpenSound();
 	}

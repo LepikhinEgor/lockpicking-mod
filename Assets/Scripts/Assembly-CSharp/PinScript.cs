@@ -14,6 +14,7 @@ public class PinScript : MonoBehaviour
 
 	SoundController soundController;
 
+	//pin в полете
 	public bool activePin;
 
 	public bool pinLocked;
@@ -31,7 +32,7 @@ public class PinScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (activePin && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) && !pinLocked))
+		if (activePin && !pinLocked && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)))
 		{
 			StopPin();
 		}
@@ -45,18 +46,6 @@ public class PinScript : MonoBehaviour
 			{
 				HitPin();
 			}
-			if (other.CompareTag("RedSpring"))
-			{
-				pinLocked = false;
-			}
-		}
-	}
-
-	private void OnTriggerStay(Collider other)
-	{
-		if (colliderActive && other.CompareTag("RedSpring"))
-		{
-			pinLocked = false;
 		}
 	}
 
@@ -75,17 +64,15 @@ public class PinScript : MonoBehaviour
 		pinAnim.speed = 0f;
 		colliderActive = true;
 		pinLocked = true;
-		//CheckPin();
-		Debug.Log(springPositionScript.CheckPinLocked(this));
 		if (springPositionScript.CheckPinLocked(this))
 		{
-			activePin = false;
+			Invoke("DeactivatePin", 0.25f);
 			puzzleScript.progress++;
-			puzzleScript.StopHit();
 			soundController.PlayFixSound();
 		}
 		else
 		{
+			activePin = false;
 			soundController.PlayFailSound();
 			Invoke("ResetPuzzle", 0.25f);
 		}
@@ -99,23 +86,9 @@ public class PinScript : MonoBehaviour
 		puzzleScript.StopHit();
 	}
 
-	public void CheckPin()
-	{
-		if (pinLocked)
-		{
-			activePin = false;
-			puzzleScript.progress++;
-			puzzleScript.StopHit();
-			soundController.PlayFixSound();
-		}
-		else
-		{
-			ResetPuzzle();
-		}
-	}
-
 	public void ResetPuzzle()
 	{
+		activePin = true;
 		puzzleScript.DecreasePicksCount();
 		puzzleScript.ResetPuzzle(false);
 	}

@@ -66,7 +66,6 @@ public class SpringPositionScript : MonoBehaviour
             Springs[i].GetComponent<MeshRenderer>().enabled = true;
         }
 
-        Debug.Log("start = " + greenPositionStart + " end " + greenPositionEnd);
         lockTargetMaxY = Springs[greenPositionStart].transform.position.y + springItemSize / 2 - 0.01377f;
         lockTargetMinY = Springs[greenPositionEnd].transform.position.y - springItemSize / 2 - 0.01377f;
     }
@@ -77,8 +76,6 @@ public class SpringPositionScript : MonoBehaviour
 
         float pinYMin = pin.transform.position.y - pinSizeY / 2;
         float pinYMax = pin.transform.position.y + pinSizeY / 2;
-
-        Debug.Log(pinYMin + " " + lockTargetMinY + " " + pinYMax + " " + lockTargetMaxY );
 
         return pinYMin > lockTargetMinY && pinYMax < lockTargetMaxY;
     }
