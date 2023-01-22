@@ -143,10 +143,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1087033953387394968}
   fixSounds:
-  - {fileID: 8300000, guid: 53fe2368a95a8c34590feef4ca03e8fc, type: 3}
-  - {fileID: 8300000, guid: 8a815b15a4c7105428c3ce712ed8742a, type: 3}
   - {fileID: 8300000, guid: d707f68ef229f33438786e54a8ca80e8, type: 3}
-  openSounds: []
+  failSounds:
+  - {fileID: 8300000, guid: d7403b027b01dc34080ee11d1b5b355d, type: 3}
+  - {fileID: 8300000, guid: 26af78e5c8ac28844846d34f74cad390, type: 3}
+  - {fileID: 8300000, guid: 6211f450c63776a46ba661dc6cfbea8e, type: 3}
+  - {fileID: 8300000, guid: 0c7241df54b6f024b82338e40401fa05, type: 3}
+  openSounds:
+  - {fileID: 8300000, guid: 4c1d7dd4fa239bb469a476f635707927, type: 3}
+  - {fileID: 8300000, guid: 3d27d8e61f455f74ab8a64ccc76c924d, type: 3}
+  - {fileID: 8300000, guid: 66d9c7f5eaeeeb04387a64176d5866ac, type: 3}
+  - {fileID: 8300000, guid: bc28bcba97e02c94e8a51cf924f4051e, type: 3}
   skripSoundsSounds: []
 --- !u!1 &2867286915050019339
 GameObject:
@@ -210,7 +217,7 @@ MonoBehaviour:
   isDebug: 1
   lockLevel: 4
   picksCountText: {fileID: 1499392335191723174}
-  playerSkill: 50
+  playerSkill: 60
   picksCount: 100
   doorScript: {fileID: 0}
   activeSpring: {fileID: 0}
@@ -966,7 +973,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9034138630463313998}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1031,12 +1038,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 9034138630463314150}
   - {fileID: 1603320578996164335}
   - {fileID: 3418734246313451945}
   - {fileID: 6722220371338434}
   - {fileID: 3730759647083023311}
   - {fileID: 3373110860372079405}
+  - {fileID: 9034138630463314150}
   m_Father: {fileID: 3585173876781357195}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: -90}

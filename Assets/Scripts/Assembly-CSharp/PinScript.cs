@@ -86,6 +86,7 @@ public class PinScript : MonoBehaviour
 		}
 		else
 		{
+			soundController.PlayFailSound();
 			Invoke("ResetPuzzle", 0.25f);
 		}
 	}

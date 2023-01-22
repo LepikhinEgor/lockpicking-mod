@@ -11,6 +11,9 @@ public class SoundController : MonoBehaviour
     List<AudioClip> fixSounds;
 
     [SerializeField]
+    List<AudioClip> failSounds;
+
+    [SerializeField]
     List<AudioClip> openSounds;
 
     [SerializeField]
@@ -26,5 +29,11 @@ public class SoundController : MonoBehaviour
     {
         int soundNum = Random.Range(0, openSounds.Count);
         audioSource.PlayOneShot(openSounds[soundNum]);
+    }
+
+    public void PlayFailSound()
+    {
+        int soundNum = Random.Range(0, failSounds.Count);
+        audioSource.PlayOneShot(failSounds[soundNum]);
     }
 }
