@@ -18,7 +18,10 @@ public class SoundController : MonoBehaviour
 
     [SerializeField]
     List<AudioClip> skripSoundsSounds;
-  
+
+    [SerializeField]
+    List<AudioClip> keyInsertSounds;
+
     public void PlayFixSound()
     {
         int soundNum = Random.Range(0, fixSounds.Count);
@@ -35,5 +38,11 @@ public class SoundController : MonoBehaviour
     {
         int soundNum = Random.Range(0, failSounds.Count);
         audioSource.PlayOneShot(failSounds[soundNum]);
+    }
+
+    public void PlayKeyInsertSound()
+    {
+        int soundNum = Random.Range(0, keyInsertSounds.Count);
+        audioSource.PlayOneShot(keyInsertSounds[soundNum]);
     }
 }

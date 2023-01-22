@@ -152,8 +152,14 @@ public class PuzzleScript : MonoBehaviour
 
 	private void CompleteUnlock()
     {
+		soundController.PlayKeyInsertSound();
+		springPositions.ForEach((springPosition) => springPosition.pinScript.ResetPin(true));
+		Invoke("PlayCompleteAnimation", 0.5f);
+	}
+
+	private void PlayCompleteAnimation()
+    {
 		tumbler.transform.Find("pins").gameObject.SetActive(true);
-		springPositions.ForEach((springPosition) => springPosition.gameObject.SetActive(false));
 		puzzleAnim.SetTrigger("Complete");
 		soundController.PlayOpenSound();
 	}
@@ -300,8 +306,11 @@ public class PuzzleScript : MonoBehaviour
 		}
 		foreach (SpringPositionScript springPosition in springPositions)
 		{
+			springPosition.pinScript.GetComponent<MeshRenderer>().enabled = true;
 			springPosition.ResetSprings();
 		}
+
+		tumbler.transform.Find("pins").gameObject.SetActive(false);
 
 		picksCountText.text = "Picks: " + picksCount;
 	}

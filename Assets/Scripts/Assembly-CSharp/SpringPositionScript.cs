@@ -107,6 +107,6 @@ public class SpringPositionScript : MonoBehaviour
 
     public void ResetSprings()
     {
-        pinScript.ResetPin();
+        pinScript.ResetPin(false);
     }
 }

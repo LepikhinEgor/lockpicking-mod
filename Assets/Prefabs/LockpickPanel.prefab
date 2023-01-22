@@ -321,6 +321,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 66d9c7f5eaeeeb04387a64176d5866ac, type: 3}
   - {fileID: 8300000, guid: bc28bcba97e02c94e8a51cf924f4051e, type: 3}
   skripSoundsSounds: []
+  keyInsertSounds:
+  - {fileID: 8300000, guid: 594e47c0c95267641bdfe2425432f469, type: 3}
 --- !u!1 &2867286915050019339
 GameObject:
   m_ObjectHideFlags: 0

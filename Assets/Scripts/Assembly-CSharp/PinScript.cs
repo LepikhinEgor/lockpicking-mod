@@ -93,7 +93,7 @@ public class PinScript : MonoBehaviour
 		puzzleScript.ResetPuzzle(false);
 	}
 
-	public void ResetPin()
+	public void ResetPin(bool hideAfterReset)
 	{
 		pinLocked = false;
 		activePin = false;
@@ -101,5 +101,13 @@ public class PinScript : MonoBehaviour
 		colliderActive = true;
 		pinAnim.SetTrigger("Reset");
 		pinAnim.speed = 1f;
+
+		if (hideAfterReset)
+			Invoke("HidePin", 0.25f);
+	}
+
+	private void HidePin()
+    {
+		GetComponent<MeshRenderer>().enabled = false;
 	}
 }
