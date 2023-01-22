@@ -72,7 +72,7 @@ public class PuzzleScript : MonoBehaviour
 
 	private void Start()
 	{
-		initialAxisPosition = new Vector3(0.031F, pickAxis.localPosition.y, pickAxis.localPosition.z);
+		initialAxisPosition = new Vector3(0.038F, pickAxis.localPosition.y, pickAxis.localPosition.z);
 		puzzleActive = false;
 		hitting = false;
 		animating = false;

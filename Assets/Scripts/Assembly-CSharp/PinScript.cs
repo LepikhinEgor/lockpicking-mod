@@ -52,6 +52,7 @@ public class PinScript : MonoBehaviour
 	//Ударили по пину отмычкой
 	public void HitPin()
 	{
+		soundController.PlayHitSound();
 		springPositionScript.enabled = true;
 		activePin = true;
 		colliderActive = false;
