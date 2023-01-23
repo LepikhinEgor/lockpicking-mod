@@ -62,22 +62,17 @@ public class PuzzleScript : MonoBehaviour
 
 	private bool hitting;
 
-	private bool puzzleActive;
-
-	private bool animating;
-
 	private bool moveRight;
 
 	private bool moveLeft;
 
 	private void Start()
 	{
-		initialAxisPosition = new Vector3(0.038F, pickAxis.localPosition.y, pickAxis.localPosition.z);
-		puzzleActive = false;
+		initialAxisPosition = pickAxis.localPosition;
 		hitting = false;
-		animating = false;
-
 		soundController = GameObject.FindObjectOfType<SoundController>();
+
+		CreatePuzzle();
 	}
 
 	private void Update()
@@ -85,12 +80,6 @@ public class PuzzleScript : MonoBehaviour
 		if (isDebug)
         {
 			ProcessDebugControls();
-		}
-
-		if (Input.GetKeyDown(KeyCode.F2))  
-		{
-			hasKit = picksCount > 0;
-			Toggle();
 		}
 
 		if (InputHitPin() && !hitting && !(activeSpring?.pinScript?.activePin ?? false))
@@ -122,7 +111,7 @@ public class PuzzleScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!hasKit || !puzzleActive)
+        if (!hasKit)
             return;
 
         if (moveRight && pickAxis.transform.localPosition.x > initialAxisPosition.x - LOCK_WIDTH)
@@ -139,7 +128,6 @@ public class PuzzleScript : MonoBehaviour
         {
             completed = true;
             tumblerMesh.enabled = true;
-            puzzleActive = false;
 			Invoke("CompleteUnlock", 0.25f);
 
             if (doorScript != null)
@@ -154,13 +142,18 @@ public class PuzzleScript : MonoBehaviour
     {
 		soundController.PlayKeyInsertSound();
 		springPositions.ForEach((springPosition) => springPosition.pinScript.ResetPin(true));
-		Invoke("PlayCompleteAnimation", 0.5f);
+		Invoke("PlayCompleteAnimation", 0.1f);
 	}
 
 	private void PlayCompleteAnimation()
     {
 		tumbler.transform.Find("pins").gameObject.SetActive(true);
 		puzzleAnim.SetTrigger("Complete");
+
+	}
+
+	private void PlayUnlockSound()
+    {
 		soundController.PlayOpenSound();
 	}
 
@@ -198,10 +191,7 @@ public class PuzzleScript : MonoBehaviour
 			picksCount = 5;
 			CreatePuzzle();
 		}
-		if (Input.GetKeyDown(KeyCode.L) && !animating)
-		{
-			Toggle();
-		}
+
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			Application.Quit();
@@ -249,41 +239,6 @@ public class PuzzleScript : MonoBehaviour
 		}
 	}
 
-	public void Toggle()
-	{
-		animating = true;
-		if (puzzleActive)
-		{
-			Hide();
-		}
-		else
-		{
-			Show();
-		}
-	}
-
-	public void Show()
-	{
-		CreatePuzzle();
-		puzzleAnim.SetTrigger("Show");
-	}
-
-	public void Hide()
-	{
-		puzzleActive = false;
-		puzzleAnim.SetTrigger("Hide");
-	}
-
-	public void ClearAnimation()
-	{
-		puzzleActive = true;
-		animating = false;
-	}
-
-	public void ClearAnimationCanMove()
-	{
-		animating = false;
-	}
 
 	public void StopHit()
 	{
@@ -294,12 +249,12 @@ public class PuzzleScript : MonoBehaviour
 	{
 		completed = false;
 		progress = 0;
-		if (_resetPick)
-		{
-			pickAxis.localPosition = initialAxisPosition;
-		}
+        if (_resetPick)
+        {
+            pickAxis.localPosition = initialAxisPosition;
+        }
 
-		if (picksCount <= 0)
+        if (picksCount <= 0)
         {
 			pickAxis.gameObject.SetActive(false);
 
@@ -313,10 +268,24 @@ public class PuzzleScript : MonoBehaviour
 		tumbler.transform.Find("pins").gameObject.SetActive(false);
 
 		picksCountText.text = "Picks: " + picksCount;
+
+		hasKit = picksCount > 0;
 	}
 
 	public void DecreasePicksCount()
     {
 		picksCount--;
     }
+
+	public void UnlockCompleted()
+    {
+		Invoke("PlayUnlockSound", 0.0f);
+		tumbler.transform.eulerAngles = new Vector3(0F, 0F, -90F);
+		Invoke("DisablePanel", 0.5f);
+    }
+
+	public void DisablePanel()
+    {
+		gameObject.SetActive(false);
+	}
 }
